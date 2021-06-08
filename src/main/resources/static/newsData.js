@@ -5,7 +5,7 @@ button.onclick = function(){
   getFetch()
 }
 
-const postUrl = "http://3.238.97.159:9090/request/new";
+const postUrl = "http://3.239.56.116:9090/request/new";
 const postRequestOption = {
   headers: {
     "Content-type": 'application/json'
@@ -18,10 +18,10 @@ const postRequestOption = {
 
 function postFetch() {
   fetch(postUrl, postRequestOption)
-    .then(response => response.json())
+      .then(response => response.json())
 
 }
-const getUrl = "http://3.238.97.159:9090/request/all";
+const getUrl = "http://3.239.56.116:9090/request/all";
 const getRequestOption = {
   headers: {
     "Content-type": 'application/json'
@@ -31,17 +31,30 @@ const getRequestOption = {
 };
 
 function getFetch() {
-fetch(getUrl, getRequestOption)
-  .then(response => response.json())
-  .then(data => gotData(data));
+  fetch(getUrl, getRequestOption)
+      .then(response => response.json())
+      .then(data => gotData(data));
 }
 
 function gotData(data){
-  data.forEach(addRow);
+  data.forEach(d => addTable(d));
 }
 
-function addRow(data) {
-  const table = document.querySelector(".newsDataTable");
+function addTable(data){
+  let tableHolder = document.getElementById("table-holder");
+
+  let p = document.createElement("p");
+  p.innerHTML = data.id + " | " + data.link + " | " + data.parameter + " | " + data.timestamp;
+  tableHolder.appendChild(p);
+
+  let table = document.createElement("table");
+  table.className = "table newsDataTable";
+  tableHolder.appendChild(table);
+
+  data.data.forEach(d => addRow(d, table));
+}
+
+function addRow(data, table) {
   let rowCount = table.rows.length;
   let row = table.insertRow(rowCount);
 
